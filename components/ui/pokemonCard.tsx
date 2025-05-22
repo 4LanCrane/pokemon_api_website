@@ -23,16 +23,16 @@ function PokemonCard({
 }) {
   return (
     <Link href={`/pokemon-details?name=${name}`}>
-      <div className="shadow-sm rounded-xs flex flex-col  w-50 h-50">
-        <div className="flex items-center justify-center w-full h-full bg-gray-200 ">
-          <img src={imageUrl} alt={name} className="w-16 h-16" />
+      <div className="shadow-lg rounded-sm flex flex-col border border-gray-300 bg-white hover:shadow-2xl transition duration-300 ease-in-out">
+        <div className="flex items-center justify-center  bg-gray-200 rounded-t-sm">
+          <img src={imageUrl} alt={name} className="w-36 h-36" />
         </div>
         <div className="float-left ml-3 ">
           <h1 className="font-semibold">{name}</h1>
           <p className="text-gray-500 text-sm">
             #{String(number).padStart(4, "0")}
           </p>
-          <p className="text-gray-500 text-sm">{test}</p>
+          <p className="text-gray-500 text-sm ">{test}</p>
         </div>
       </div>
     </Link>

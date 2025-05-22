@@ -79,18 +79,18 @@ export default function Home() {
 
       <div className="mt-10 pb-20">
         <hr className="w-auto h-0.2 mx-auto my-4 bg-gray-900  "></hr>
-        <h1 className="ml-10 float-left text-1xl  font-semibold">
+        <h1 className="ml-40 float-left text-2xl  font-medium">
           {searchText ? `results for "${searchText}"` : "Explore Pokèmon"}
         </h1>
-        <div className="ml-10 float-right flex ">
+        <div className="mr-40 float-right flex gap-3 ">
           <Input
-            className="gap-1.5 w-40"
+            className="w-40"
             placeholder="Find Pokèmon"
             value={search}
             onChange={(a) => setSearch(a.target.value)}
           />
           <Button
-            className="mr-10 float-right"
+            className="float-right"
             variant="default"
             onClick={() => searchPokemon(search)}
           >
@@ -98,7 +98,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <div className=" mb-6 flex flex-wrap gap-4 justify-center-safe">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-40">
         {loading ? (
           <div>
             <h1>loading</h1>
