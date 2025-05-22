@@ -3,25 +3,34 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PokemonCard } from "@/components/ui/pokemonCard";
+
+const itemsPerPage = 30;
+
 export default function Home() {
   const [pokemonList, setPokemonList] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const fetchList = async (): Promise<void> => {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=200");
+  const fetchList = async (currentPage = 0): Promise<void> => {
+    setLoading(true);
+    const offset = currentPage * itemsPerPage;
+    const res = await fetch(
+      `https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${offset}`
+    );
     const data = await res.json();
     const resWithId = data.results.map((pokemon: any) => {
       const imageId = pokemon.url.split("/").filter(Boolean).pop();
       return { ...pokemon, imageId };
     });
+    setLoading(false);
     setPokemonList(resWithId);
   };
 
   useEffect(() => {
-    fetchList();
-  }, []);
+    fetchList(currentPage);
+  }, [currentPage]);
 
   const Pokemon = async (search: string) => {
     setLoading(true);
@@ -98,8 +107,26 @@ export default function Home() {
         )}
       </div>
       <nav className="mb-10 mt-10 flex justify-center-safe gap-3">
-        <Button>Back</Button>
-        <Button>Next</Button>
+        <Button
+          onClick={() => {
+            if (currentPage > 0) {
+              setCurrentPage(currentPage - 1);
+            }
+          }}
+          disabled={currentPage === 0}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            if (pokemonList.length === itemsPerPage) {
+              setCurrentPage(currentPage + 1);
+            }
+          }}
+          disabled={pokemonList.length < itemsPerPage}
+        >
+          Next
+        </Button>
       </nav>
       <hr className="w-auto h-0.2 mx-auto my-4 bg-gray-900  "></hr>
       <footer className="mt-10 mb-10 flex justify-center-safe">
