@@ -12,8 +12,8 @@ export default function Home() {
     const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=200");
     const data = await res.json();
     const resWithId = data.results.map((pokemon: any) => {
-      const id = pokemon.url.split("/").filter(Boolean).pop();
-      return { ...pokemon, id };
+      const imageId = pokemon.url.split("/").filter(Boolean).pop();
+      return { ...pokemon, imageId };
     });
     setPokemonList(resWithId);
   };
@@ -33,14 +33,14 @@ export default function Home() {
     );
     if (!response.ok) {
       setPokemonList([]);
-     
+
       return;
     }
     const data = await response.json();
     setPokemonList([
       {
         name: data.name,
-        id: data.id,
+        imageId: data.id,
       },
     ]);
     setSearchText(search);
@@ -83,7 +83,7 @@ export default function Home() {
           <PokemonCard
             key={pokemon.name}
             name={pokemon.name}
-            imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+            imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.imageId}.png`}
           />
         ))}
       </div>
