@@ -20,19 +20,25 @@ export default function Home() {
       `https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${offset}`
     );
     const data = await res.json();
-    const resWithId = data.results.map((pokemon: any) => {
-      const imageId = pokemon.url.split("/").filter(Boolean).pop();
-      return { ...pokemon, imageId };
-    });
+    const resWithDetails = await Promise.all(
+      data.results.map(async (pokemon: any) => {
+        const details = await fetch(pokemon.url).then((res) => res.json());
+        return {
+          name: details.name,
+          imageId: details.id,
+          types: details.types.map((t: any) => t.type.name),
+        };
+      })
+    );
+    setPokemonList(resWithDetails);
     setLoading(false);
-    setPokemonList(resWithId);
   };
 
   useEffect(() => {
     fetchList(currentPage);
   }, [currentPage]);
 
-  const Pokemon = async (search: string) => {
+  const searchPokemon = async (search: string) => {
     setLoading(true);
     if (search.length === 0) {
       fetchList();
@@ -53,6 +59,7 @@ export default function Home() {
       {
         name: data.name,
         imageId: data.id,
+        types: data.types.map((t: any) => t.type.name),
       },
     ]);
     setSearchText(search);
@@ -85,7 +92,7 @@ export default function Home() {
           <Button
             className="mr-10 float-right"
             variant="default"
-            onClick={() => Pokemon(search)}
+            onClick={() => searchPokemon(search)}
           >
             Search
           </Button>
@@ -101,6 +108,8 @@ export default function Home() {
             <PokemonCard
               key={pokemon.name}
               name={pokemon.name}
+              number={pokemon.imageId}
+              test={pokemon.types.join(", ")} // need to update this to format in the card
               imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.imageId}.png`}
             />
           ))
