@@ -35,7 +35,33 @@ export default function PokemonDetails() {
         <strong>Weight:</strong> {pokemon.weight}
       </p>
       <p>
+        <strong>HP:</strong> {pokemon.stats[0].base_stat}
+      </p>
+      <p>
+        <strong>Attack:</strong> {pokemon.stats[1].base_stat}
+      </p>
+      <p>
+        <strong>Defense:</strong> {pokemon.stats[2].base_stat}
+      </p>
+      <p>
+        <strong>Special Attack:</strong> {pokemon.stats[3].base_stat}
+      </p>
+      <p>
+        <strong>Special Defense:</strong> {pokemon.stats[4].base_stat}
+      </p>
+      <p>
+        <strong>Speed:</strong> {pokemon.stats[5].base_stat}
+      </p>
+      <p>
+        <strong>Abilities:</strong>{" "}
+        {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}
+      </p>
+      <p>
         <strong>Types:</strong>{" "}
+        {pokemon.types.map((t: any) => t.type.name).join(", ")}
+      </p>
+      <p>
+        <strong>Weaknesses:</strong>{" "}
         {pokemon.types.map((t: any) => t.type.name).join(", ")}
       </p>
       <a href="/" className="text-blue-600 underline mt-4 block">
