@@ -7,6 +7,7 @@ export default function Home() {
   const [pokemonList, setPokemonList] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchList = async (): Promise<void> => {
     const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=200");
@@ -23,9 +24,11 @@ export default function Home() {
   }, []);
 
   const Pokemon = async (search: string) => {
+    setLoading(true);
     if (search.length === 0) {
       fetchList();
       setSearchText("");
+      setLoading(false);
       return;
     }
     const response = await fetch(
@@ -33,7 +36,7 @@ export default function Home() {
     );
     if (!response.ok) {
       setPokemonList([]);
-
+      setLoading(false);
       return;
     }
     const data = await response.json();
@@ -44,10 +47,11 @@ export default function Home() {
       },
     ]);
     setSearchText(search);
+    setLoading(false);
   };
 
   return (
-    <main className="">
+    <main>
       <header className="pt-10 pb-10">
         <h1 className="pb-2 text-3xl font-bold justify-center-safe flex">
           Pokèmon Browser
@@ -79,13 +83,19 @@ export default function Home() {
         </div>
       </div>
       <div className=" mb-6 flex flex-wrap gap-4 justify-center-safe">
-        {pokemonList.map((pokemon: any) => (
-          <PokemonCard
-            key={pokemon.name}
-            name={pokemon.name}
-            imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.imageId}.png`}
-          />
-        ))}
+        {loading ? (
+          <div>
+            <h1>loading</h1>
+          </div>
+        ) : (
+          pokemonList.map((pokemon: any) => (
+            <PokemonCard
+              key={pokemon.name}
+              name={pokemon.name}
+              imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.imageId}.png`}
+            />
+          ))
+        )}
       </div>
       <nav className="mb-10 mt-10 flex justify-center-safe gap-3">
         <Button>Back</Button>
