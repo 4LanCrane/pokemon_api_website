@@ -53,15 +53,15 @@ export default function PokemonDetails() {
         <strong>Speed:</strong> {pokemon.stats[5].base_stat}
       </p>
       <p>
-        <strong>Abilities:</strong>{" "}
+        <strong>Abilities:</strong>
         {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}
       </p>
       <p>
-        <strong>Types:</strong>{" "}
+        <strong>Types:</strong>
         {pokemon.types.map((t: any) => t.type.name).join(", ")}
       </p>
       <p>
-        <strong>Weaknesses:</strong>{" "}
+        <strong>Weaknesses:</strong>
         {pokemon.types.map((t: any) => t.type.name).join(", ")}
       </p>
       <a href="/" className="text-blue-600 underline mt-4 block">
