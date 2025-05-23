@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Progress } from "@/components/ui/progressBar";
 
 export default function PokemonDetails() {
   const searchParams = useSearchParams();
@@ -42,30 +43,38 @@ export default function PokemonDetails() {
         </p>
       </div>
 
-      <p>
-        <strong>Height:</strong> {pokemon.height}
-      </p>
-      <p>
-        <strong>Weight:</strong> {pokemon.weight}
-      </p>
-      <p>
-        <strong>HP:</strong> {pokemon.stats[0].base_stat}
-      </p>
-      <p>
-        <strong>Attack:</strong> {pokemon.stats[1].base_stat}
-      </p>
-      <p>
-        <strong>Defense:</strong> {pokemon.stats[2].base_stat}
-      </p>
-      <p>
-        <strong>Special Attack:</strong> {pokemon.stats[3].base_stat}
-      </p>
-      <p>
-        <strong>Special Defense:</strong> {pokemon.stats[4].base_stat}
-      </p>
-      <p>
-        <strong>Speed:</strong> {pokemon.stats[5].base_stat}
-      </p>
+      <div className="w-full max-w-md mx-auto mt-6 space-y-3 bg-amber-300">
+        <div className="flex items-center justify-between">
+          <p>HP</p>
+          <Progress value={pokemon.stats[0].base_stat} className="w-72 mt-2" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p>Attack</p>
+          <Progress value={pokemon.stats[1].base_stat} className="w-72 mt-2" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p>Defense</p>
+          <Progress value={pokemon.stats[2].base_stat} className="w-72 mt-2" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p>Special Attack</p>
+          <Progress value={pokemon.stats[3].base_stat} className="w-72 mt-2" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p>Special Defense</p>
+          <Progress value={pokemon.stats[4].base_stat} className="w-72 mt-2" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p>Speed</p>
+          <Progress value={pokemon.stats[5].base_stat} className="w-72 mt-2" />
+        </div>
+      </div>
+
       <p>
         <strong>Abilities:</strong>
         {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}

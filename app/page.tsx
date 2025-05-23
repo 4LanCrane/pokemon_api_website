@@ -10,7 +10,7 @@ export default function Home() {
   const [pokemonList, setPokemonList] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
 
   const fetchList = async (currentPage = 0): Promise<void> => {
