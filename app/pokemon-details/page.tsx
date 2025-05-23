@@ -22,12 +22,26 @@ export default function PokemonDetails() {
   }
   const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
   return (
-    <main className="p-8">
-      <h1 className="text-3xl font-bold capitalize mb-4">{pokemon.name}</h1>
-      <img src={imageUrl} alt={pokemon.name} className="w-48 h-48 mb-4" />
-      <p>
-        <strong>ID:</strong> {pokemon.id}
-      </p>
+    <main>
+      <header className="pb-2 pt-2">
+        <h1 className="pl-10 text-1xl font-bold">Pokèmon Browser</h1>
+      </header>
+      <div className="justify-center-safe flex flex-col items-center relative">
+        <div className="bg-gray-300 flex-row w-full h-22"></div>
+        <img
+          src={imageUrl}
+          alt={pokemon.name}
+          className="w-48 h-48 mb-4 rounded-full bg-gray-100 border-2 border-gray-300 shadow-lg -mt-10"
+        />
+      </div>
+      <div className="flex justify-center-safe ">
+        <h3 className="font-bold capitalize mr-1"> {pokemon.name}</h3>
+        <p className="text-gray-400 font-bold">
+          {" "}
+          #{String(pokemon.id).padStart(4, "0")}
+        </p>
+      </div>
+
       <p>
         <strong>Height:</strong> {pokemon.height}
       </p>
@@ -67,6 +81,9 @@ export default function PokemonDetails() {
       <a href="/" className="text-blue-600 underline mt-4 block">
         Back to list
       </a>
+      <footer className="mt-10 mb-10 flex justify-center-safe">
+        <p>Thank you for using Pokèmon Brower!</p>
+      </footer>
     </main>
   );
 }
