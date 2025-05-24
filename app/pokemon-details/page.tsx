@@ -57,12 +57,12 @@ export default function PokemonDetails() {
       {/* The Grid starts here */}
       <div className="grid grid-cols-3 grid-rows-[auto_auto_1fr] gap-3 mt-8 mx-20">
         {/* this is the top bar which contains the  "flavorText" */}
-        <div className="bg-gray-200 p-4 col-span-3 rounded-lg shadow-md h-20 mb-5">
+        <div className="bg-gray-200 p-4 col-span-3 rounded-lg shadow-md mb-5 h-auto">
           <p>{flavorText || ""}</p>
         </div>
 
         {/* Green sidebar, spans all rows, contains height, category, weight and gender */}
-        <div className=" rounded-lg flex flex-col items-center row-span-3 w-full min-h-[440px] outline-solid ">
+        <div className=" rounded-lg flex flex-col items-center md:row-span-3 w-full min-h-[440px] outline-solid sm:w-auto ">
           <div className=" text-center mt-5 space-y-4">
             <div>
               <span className="font-bold">Height</span>
@@ -92,7 +92,7 @@ export default function PokemonDetails() {
             </div>
           </div>
         </div>
-        <div className="p-4 rounded-lg col-span-1 min-h-[200px] outline-solid">
+        <div className="p-4 rounded-lg md:col-span-1 min-h-[200px] outline-solid sm: col-span-2">
           <p>
             <strong>Types:</strong>{" "}
             {pokemon.types.map((t: any) => t.type.name).join(", ")}
@@ -103,7 +103,7 @@ export default function PokemonDetails() {
           </p>
         </div>
 
-        <div className="p-4 rounded-lg shadow-md col-span-1 min-h-[200px] outline-solid">
+        <div className="p-4 rounded-lg shadow-md col-span-1 md:min-h-[200px] outline-solid">
           <p>
             <strong>Abilities:</strong>{" "}
             {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}

@@ -23,7 +23,7 @@ function PokemonCard({
 }) {
   return (
     <Link href={`/pokemon-details?name=${name}`}>
-      <div className="shadow-lg rounded-sm flex flex-col border border-gray-300 bg-white hover:shadow-2xl transition duration-300 ease-in-out">
+      <div className="shadow-lg rounded-sm flex flex-col border border-gray-300 bg-white hover:shadow-2xl transition duration-300 ease-in-out ">
         <div className="flex items-center justify-center  bg-gray-200 rounded-t-sm">
           <img src={imageUrl} alt={name} className="w-36 h-36" />
         </div>

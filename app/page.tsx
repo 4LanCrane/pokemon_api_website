@@ -77,12 +77,12 @@ export default function Home() {
         </h2>
       </header>
 
-      <div className="mt-10 pb-20">
-        <hr className="w-auto h-0.2 mx-auto my-4 bg-gray-900  "></hr>
-        <h1 className="ml-40 float-left text-2xl  font-medium">
+      <div className="mt-10 pb-20 sm: place-items-center">
+        <hr className="w-auto h-0.2 mx-auto my-4 bg-gray-900 "></hr>
+        <h1 className="md:ml-40 md:float-left text-2xl  font-medium ">
           {searchText ? `results for "${searchText}"` : "Explore Pokèmon"}
         </h1>
-        <div className="mr-40 float-right flex gap-3 ">
+        <div className="md:mr-40 md:float-right flex gap-3">
           <Input
             className="w-40"
             placeholder="Find Pokèmon"
@@ -98,7 +98,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-40">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:mx-40 md:mx-10 sm:mx-10 mx-5">
         {loading ? (
           <div>
             <h1>loading</h1>
