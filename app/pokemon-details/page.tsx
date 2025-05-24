@@ -1,18 +1,26 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progressBar";
 
 export default function PokemonDetails() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [pokemon, setPokemon] = useState<any>(null);
+  const [species, setSpecies] = useState<any>(null);
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .then((res) => res.json())
       .then(setPokemon);
   }, [name]);
+
+  useEffect(() => {
+    if (!pokemon) return;
+    fetch(pokemon.species.url)
+      .then((res) => res.json())
+      .then(setSpecies);
+  }, [pokemon]);
 
   if (!pokemon || !name) {
     return (
@@ -22,13 +30,16 @@ export default function PokemonDetails() {
     );
   }
   const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
+  const flavorText = species?.flavor_text_entries
+    ?.find((entry: any) => entry.language.name === "en")
+    ?.flavor_text.replace("not available");
   return (
     <main>
       <header className="pb-2 pt-2">
         <h1 className="pl-10 text-1xl font-bold">Pokèmon Browser</h1>
       </header>
       <div className="justify-center-safe flex flex-col items-center relative">
-        <div className="bg-gray-300 flex-row w-full h-22"></div>
+        <div className="bg-gray-300 flex-row w-full h-32"></div>
         <img
           src={imageUrl}
           alt={pokemon.name}
@@ -38,87 +49,79 @@ export default function PokemonDetails() {
       <div className="flex justify-center-safe ">
         <h3 className="font-bold capitalize mr-1"> {pokemon.name}</h3>
         <p className="text-gray-400 font-bold">
-          {" "}
           #{String(pokemon.id).padStart(4, "0")}
         </p>
       </div>
 
-      {/* Grid starts here */}
-      <div className="grid  gap-1   ">
-        {/* this is the top span box*/}
-        <div className="col-start-1 row-start-1 col-span-3 bg-amber-400 h-20"></div>
-
-    {/*this is the large sidebar */}
-        <div className="bg-green-600 col-start-1 row-span-3 col-span-1 ">
-        <p>testing</p>
+      {/* The Grid starts here */}
+      <div className="grid grid-cols-3 grid-rows-[auto_auto_1fr] gap-3 mt-8 mx-20">
+        {/* this is the top bar which contains the  "flavorText" */}
+        <div className="bg-gray-200 p-4 col-span-3 rounded-lg shadow-md h-20 mb-5">
+          <p>{flavorText || ""}</p>
         </div>
 
-        <div className="col-start-2 row-start-2 col-span-1 bg-gray-800 p-4 rounded-lg shadow-md">
+        {/* Green sidebar, spans all rows, contains height, category, weight and gender */}
+        <div className=" rounded-lg flex flex-col items-center row-span-3 w-full min-h-[440px] outline-solid ">
+          <div className=" text-center mt-5 space-y-4">
+            <div>
+              <span className="font-bold">Height</span>
+              <div>{pokemon.height / 10} m</div>
+            </div>
+            <div>
+              <span className="font-bold">Weight</span>
+              <div>{pokemon.weight / 10} kg</div>
+            </div>
+            <div>
+              <span className="font-bold">Category</span>
+              <div>{pokemon.species.name}</div>
+            </div>
+            <div>
+              <span className="font-bold">Gender</span>
+              <div>
+                {species
+                  ? species.gender_rate === -1
+                    ? "No gender"
+                    : species.gender_rate === 0
+                    ? "Male"
+                    : species.gender_rate === 8
+                    ? "Female"
+                    : "Male / Female"
+                  : ""}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 rounded-lg col-span-1 min-h-[200px] outline-solid">
           <p>
-            <strong>Types:</strong>
+            <strong>Types:</strong>{" "}
             {pokemon.types.map((t: any) => t.type.name).join(", ")}
           </p>
           <p>
-            <strong>Weaknesses:</strong>
+            <strong>Weaknesses:</strong>{" "}
             {pokemon.types.map((t: any) => t.type.name).join(", ")}
           </p>
         </div>
 
-        <div className="col-span-1 col-start-3 bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="p-4 rounded-lg shadow-md col-span-1 min-h-[200px] outline-solid">
           <p>
-            <strong>Abilities:</strong>
+            <strong>Abilities:</strong>{" "}
             {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}
           </p>
         </div>
 
-        {/* This is the stats for the pokemon */}
-        <div className=" bg-amber-300 col-start-2 col-span-2 row-start-3">
-          <div className="flex items-center justify-between">
-            <p>HP</p>
-            <Progress
-              value={pokemon.stats[0].base_stat}
-              className="w-72 mt-2"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p>Attack</p>
-            <Progress
-              value={pokemon.stats[1].base_stat}
-              className="w-72 mt-2"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p>Defense</p>
-            <Progress
-              value={pokemon.stats[2].base_stat}
-              className="w-72 mt-2"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p>Special Attack</p>
-            <Progress
-              value={pokemon.stats[3].base_stat}
-              className="w-72 mt-2"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p>Special Defense</p>
-            <Progress
-              value={pokemon.stats[4].base_stat}
-              className="w-72 mt-2"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p>Speed</p>
-            <Progress
-              value={pokemon.stats[5].base_stat}
-              className="w-72 mt-2"
-            />
+        <div className="p-4 rounded-lg col-start-2 col-span-2 row-start-3 outline-solid">
+          <div className="space-y-2">
+            {pokemon.stats.map((stat: any) => (
+              <div key={stat.stat.name} className="flex items-center gap-4">
+                <span className="capitalize font-medium w-32 text-right">
+                  {stat.stat.name.replace("special-", "Sp. ")}
+                </span>
+                <Progress value={stat.base_stat} className="flex-1 h-3" />
+                <span className="font-mono w-10 text-right">
+                  {stat.base_stat}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
