@@ -28,7 +28,7 @@ function PokemonCard({
           <img src={imageUrl} alt={name} className="w-36 h-36" />
         </div>
         <div className="float-left ml-3 ">
-          <h1 className="font-semibold">{name}</h1>
+          <h1 className="font-semibold capitalize">{name}</h1>
           <p className="text-gray-500 text-sm">
             #{String(number).padStart(4, "0")}
           </p>

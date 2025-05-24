@@ -2,6 +2,7 @@
 import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progressBar";
+import { Button } from "@/components/ui/button";
 
 export default function PokemonDetails() {
   const searchParams = useSearchParams();
@@ -47,7 +48,7 @@ export default function PokemonDetails() {
         />
       </div>
       <div className="flex justify-center-safe ">
-        <h3 className="font-bold capitalize mr-1"> {pokemon.name}</h3>
+        <p className="text-lg font-semibold capitalize mr-1"> {pokemon.name}</p>
         <p className="text-gray-400 font-bold">
           #{String(pokemon.id).padStart(4, "0")}
         </p>
@@ -126,9 +127,14 @@ export default function PokemonDetails() {
         </div>
       </div>
 
-      <a href="/" className="text-blue-600 underline mt-4 block">
-        Back to list
-      </a>
+      <Button
+        className="mt-6 mx-auto block"
+        variant="default"
+        onClick={() => window.history.back()}
+      >
+        Back to Search
+      </Button>
+
       <footer className="mt-10 mb-10 flex justify-center-safe">
         <p>Thank you for using Pokèmon Brower!</p>
       </footer>
