@@ -16,3 +16,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+# HomeScreen
+![pokemonSite](https://github.com/user-attachments/assets/d5229c3c-153a-4622-b3f4-54baaeca4fdb)
+
+# Details Screen
