@@ -1,34 +1,67 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progressBar";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft } from "lucide-react";
 
 export default function PokemonDetails() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [pokemon, setPokemon] = useState<any>(null);
   const [species, setSpecies] = useState<any>(null);
+  const [weaknesses, setWeaknesses] = useState<string[]>([]);
+
+  const fetchPokemonDetails = async (name: string) => {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    response
+      .json()
+      .then(setPokemon)
+      .catch((error) => {
+        console.error("Error fetching Pokémon details:", error);
+        setPokemon(null);
+      });
+  };
+
+  const fetchSpeciesDetails = async (url: string) => {
+    const response = await fetch(url);
+    return response
+      .json()
+      .then(setSpecies)
+      .catch((error) => {
+        console.error("Error fetching species details:", error);
+        setSpecies(null);
+      });
+  };
+
+  const fetchWeaknesses = async (types: string[]) => {
+    const weaknesses: string[] = [];
+    for (const type of types) {
+      const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+      const data = await response.json();
+      data.damage_relations.double_damage_from.forEach((weakness: any) => {
+        weaknesses.push(weakness.name);
+      });
+    }
+    setWeaknesses(weaknesses);
+  };
 
   useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      .then((res) => res.json())
-      .then(setPokemon);
+    if (name) {
+      fetchPokemonDetails(name);
+      fetchSpeciesDetails(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
+    }
   }, [name]);
 
   useEffect(() => {
-    if (!pokemon) return;
-    fetch(pokemon.species.url)
-      .then((res) => res.json())
-      .then(setSpecies);
+    if (pokemon && pokemon.types) {
+      fetchWeaknesses(pokemon.types.map((t: any) => t.type.name));
+    }
   }, [pokemon]);
 
   if (!pokemon || !name) {
-    return (
-      <main className="p-8">
-        <h1 className="text-3xl font-bold capitalize mb-4">Loading...</h1>
-      </main>
-    );
+    return <main className="p-8"></main>;
   }
   const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
   const flavorText = species?.flavor_text_entries
@@ -92,22 +125,42 @@ export default function PokemonDetails() {
             </div>
           </div>
         </div>
-        <div className="p-4 rounded-lg md:col-span-1 min-h-[200px] outline-solid sm: col-span-2">
+        <div className="p-4 rounded-lg md:col-span-1 min-h-[200px] outline-solid sm: col-span-2 flex flex-col">
           <p>
-            <strong>Types:</strong>{" "}
-            {pokemon.types.map((t: any) => t.type.name).join(", ")}
+            <strong>Types:</strong>
           </p>
           <p>
-            <strong>Weaknesses:</strong>{" "}
-            {pokemon.types.map((t: any) => t.type.name).join(", ")}
+            {pokemon.types.map((t: any) => (
+              <Badge key={t.type.name} className="capitalize m-1">
+                {t.type.name}
+              </Badge>
+            ))}
+          </p>
+          <p className="mt-2">
+            <strong>Weaknesses:</strong>
+          </p>
+          <p>
+            {weaknesses.map((weakness) => (
+              <Badge key={weakness} className="capitalize m-1">
+                {weakness}
+              </Badge>
+            ))}
           </p>
         </div>
 
         <div className="p-4 rounded-lg shadow-md col-span-1 md:min-h-[200px] outline-solid">
           <p>
-            <strong>Abilities:</strong>{" "}
-            {pokemon.abilities.map((a: any) => a.ability.name).join(", ")}
+            <strong>Abilities:</strong>
           </p>
+          <div>
+            {pokemon.abilities.map((ability: any) => (
+              <div key={ability.ability.name} className="mb-2">
+                <span className="font-semibold capitalize">
+                  {ability.ability.name}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="p-4 rounded-lg col-start-2 col-span-2 row-start-3 outline-solid">
@@ -115,7 +168,7 @@ export default function PokemonDetails() {
             {pokemon.stats.map((stat: any) => (
               <div key={stat.stat.name} className="flex items-center gap-4">
                 <span className="capitalize font-medium w-32 text-right">
-                  {stat.stat.name.replace("special-", "Sp. ")}
+                  {stat.stat.name.replace("-", " ")}
                 </span>
                 <Progress value={stat.base_stat} className="flex-1 h-3" />
                 <span className="font-mono w-10 text-right">
@@ -125,15 +178,14 @@ export default function PokemonDetails() {
             ))}
           </div>
         </div>
+        <Button
+          className="mt-6 w-40 p-5  col-start-1"
+          variant="default"
+          onClick={() => window.history.back()}
+        >
+          <ChevronLeft /> Back to Search
+        </Button>
       </div>
-
-      <Button
-        className="mt-6 mx-auto block"
-        variant="default"
-        onClick={() => window.history.back()}
-      >
-        Back to Search
-      </Button>
 
       <footer className="mt-10 mb-10 flex justify-center-safe">
         <p>Thank you for using Pokèmon Brower!</p>
