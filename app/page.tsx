@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PokemonCard } from "@/components/ui/pokemonCard";
+import { ClipLoader } from "react-spinners";
 
 const itemsPerPage = 30;
 
@@ -100,8 +101,9 @@ export default function Home() {
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:mx-40 md:mx-10 sm:mx-10 mx-5">
         {loading ? (
-          <div>
-            <h1>loading</h1>
+          <div className="flex flex-row h-96">
+            <ClipLoader color="blue" size={50} />
+            <p className="text-lg">Loading Pokèmon...</p>
           </div>
         ) : (
           pokemonList.map((pokemon: any) => (
