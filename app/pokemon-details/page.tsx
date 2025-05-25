@@ -61,7 +61,7 @@ export default function PokemonDetails() {
           <p>{flavorText || ""}</p>
         </div>
 
-        {/* Green sidebar, spans all rows, contains height, category, weight and gender */}
+        {/* sidebar, spans all rows, contains height, category, weight and gender */}
         <div className=" rounded-lg flex flex-col items-center md:row-span-3 w-full min-h-[440px] outline-solid sm:w-auto ">
           <div className=" text-center mt-5 space-y-4">
             <div>

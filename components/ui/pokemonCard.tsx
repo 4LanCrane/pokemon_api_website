@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-
+import { Badge } from "@/components/ui/badge";
 /**
  *
  * This screen will show the details of a pokemon including
@@ -14,12 +14,12 @@ function PokemonCard({
   number,
   name,
   imageUrl,
-  test,
+  types,
 }: {
   number: number;
   name: string;
   imageUrl: string;
-  test: string;
+  types: string[];
 }) {
   return (
     <Link href={`/pokemon-details?name=${name}`}>
@@ -32,7 +32,9 @@ function PokemonCard({
           <p className="text-gray-500 text-sm">
             #{String(number).padStart(4, "0")}
           </p>
-          <p className="text-gray-500 text-sm ">{test}</p>
+          {types.map((type) => (
+            <Badge className="capitalize bg-gray-600 m-1">{type}</Badge>
+          ))}
         </div>
       </div>
     </Link>

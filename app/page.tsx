@@ -109,7 +109,7 @@ export default function Home() {
               key={pokemon.name}
               name={pokemon.name}
               number={pokemon.imageId}
-              test={pokemon.types.join(", ")} // need to update this to format in the card
+              types={pokemon.types}
               imageUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.imageId}.png`}
             />
           ))
