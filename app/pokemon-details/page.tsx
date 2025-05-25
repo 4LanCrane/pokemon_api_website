@@ -16,10 +16,12 @@ export default function PokemonDetails() {
   const [loading, setLoading] = useState(true);
 
   const fetchPokemonDetails = async (name: string) => {
+    setLoading(true);
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
     response
       .json()
       .then(setPokemon)
+      .then(() => setLoading(false))
       .catch((error) => {
         console.error("Error fetching Pokémon details:", error);
         setPokemon(null);
@@ -27,10 +29,12 @@ export default function PokemonDetails() {
   };
 
   const fetchSpeciesDetails = async (url: string) => {
+    setLoading(true);
     const response = await fetch(url);
     return response
       .json()
       .then(setSpecies)
+      .then(() => setLoading(false))
       .catch((error) => {
         console.error("Error fetching species details:", error);
         setSpecies(null);
@@ -38,6 +42,7 @@ export default function PokemonDetails() {
   };
 
   const fetchWeaknesses = async (types: string[]) => {
+    setLoading(true);
     const weaknesses: string[] = [];
     for (const type of types) {
       const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
@@ -47,15 +52,14 @@ export default function PokemonDetails() {
       });
     }
     setWeaknesses(weaknesses);
+    setLoading(false);
   };
 
   useEffect(() => {
-    setLoading(true);
     if (name) {
       fetchPokemonDetails(name);
       fetchSpeciesDetails(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
     }
-    setLoading(false);
   }, [name]);
 
   useEffect(() => {
