@@ -78,12 +78,13 @@ export default function Home() {
         </h2>
       </header>
 
-      <div className="mt-10 pb-20 sm: place-items-center">
+      <div className="mt-10 pb-20">
         <hr className="w-auto h-0.2 mx-auto my-4 bg-gray-900 "></hr>
-        <h1 className="md:ml-40 md:float-left text-2xl  font-medium ">
+
+        <h1 className="md:ml-40 md:float-left text-2xl  font-medium flex flex-row items-center justify-center">
           {searchText ? `results for "${searchText}"` : "Explore Pokèmon"}
         </h1>
-        <div className="md:mr-40 md:float-right flex gap-3">
+        <div className="md:mr-40 md:float-right md:flex md:gap-3 flex flex-row items-center justify-center">
           <Input
             className="w-40"
             placeholder="Find Pokèmon"
@@ -91,7 +92,7 @@ export default function Home() {
             onChange={(a) => setSearch(a.target.value)}
           />
           <Button
-            className="float-right"
+            className="md:float-right"
             variant="default"
             onClick={() => searchPokemon(search)}
           >
