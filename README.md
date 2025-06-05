@@ -1,4 +1,4 @@
-## Pokemon Search Site Built Using Next.JS
+## Pokemon Search Site Built Using Next.JS, utilising the PokeApi 
 
 ## Getting Started
 
